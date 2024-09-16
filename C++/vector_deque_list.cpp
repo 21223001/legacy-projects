@@ -17,7 +17,7 @@
     // vectorの中身を出力
     copy(vectemp.begin(), vectemp.end(), ostream_iterator<int>(cout, " "));
 
-#include <deque>
+
 
 // main 
 
