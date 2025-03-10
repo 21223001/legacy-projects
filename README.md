@@ -1,5 +1,5 @@
 # What's this
-
+Introduction : VTK for python 
 
 ## REFERENCES
 
@@ -25,25 +25,25 @@ https://vtk.org/documentation/
 
 
 1_cube.py
-
+    四面体
 
 2_cone.py
-
-
+    円錐
 
 3_torus.py
-
+    トーラス🍩
 
 
 4_moebious_cross.py
-
+    モーリスクロス
 
 
 5_super_trochoid.py
-
+    スーパートロコイド
 
 
 6_lorenz_attractor.py
+    ローレンツアトラクター
 
 
 
