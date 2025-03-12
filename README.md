@@ -45,6 +45,9 @@ https://vtk.org/documentation/
 6_lorenz_attractor.py
     ローレンツアトラクター
 
+7_diffusion_test.py
+
+
 
 
 
