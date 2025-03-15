@@ -1,7 +1,8 @@
 import vtk
 
+
 # 1. STLリーダーを作成してファイルを読み込む
-stl_file_path = r"C:\Users\mosuk\Documents\VTK_test_script\Articulated_DRAGON_V3.stl"  # STLファイルのパスを指定
+stl_file_path = r"C:\Users\mosuk\Documents\VTK_test_script\DRAGON.stl"  # STLファイルのパスを指定
 reader = vtk.vtkSTLReader()
 reader.SetFileName(stl_file_path)
 reader.Update()
