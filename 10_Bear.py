@@ -1,3 +1,4 @@
+
 import vtk
 
 # レンダラー、レンダリングウィンドウ、インタラクタの作成
@@ -88,4 +89,3 @@ camera.SetFocalPoint(0, 0, 0)
 # レンダリング開始
 render_window.Render()
 render_interactor.Start()
-
