@@ -1,0 +1,69 @@
+
+Frontend  : Vue.js
+Backed  : Python
+
+
+
+ルートディレクトリにfrontedとbackend作成
+
+fronted で以下実行
+
+
+npm init -y     #初期化
+npm install vue     #vueのインストール
+npm install -g @vue/cli     #Vue CLI インストール
+
+vue create my-vue-app   # Vue projectの開始
+
+# vueサーバーの起動
+# http://localhost:8080/
+cd my-vue-app
+npm run serve
+
+
+
+backend で以下実行
+
+  Node.jsの利用を試みた
+    npm init -y
+
+
+    // backend/index.js
+    const express = require('express');
+    const app = express();
+    const port = 3000;
+
+    // シンプルなGETリクエストの応答
+    app.get('/', (req, res) => {
+      res.send('Hello from Node.js backend!');
+    });
+
+    // サーバー起動
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+
+
+
+
+    # http://localhost:3000
+    node index.js
+
+    # VueとNodeを接続する為にcorsを利用
+    npm install cors
+
+
+    # マウス位置取得
+    npm install @nut-tree/nut-js
+
+    ## マウス操作関係のライブラリをVisual Studioでコンパイルする必要がある．#
+    ## 面倒なので，バックエンドはPythonで作成する事にする##
+
+  Pythonを用いたバックエンドの開発
+
+  # condaのバージョンを確認
+  conda --version
+  conda 24.11.2
+
+
+
