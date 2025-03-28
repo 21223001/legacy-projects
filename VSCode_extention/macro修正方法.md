@@ -23,5 +23,10 @@ vsce package
 
 
 
+VSCodeから直接インストール
+サイドバーより拡張機能
 
+...（右上の「その他アクション」）→ Install from VSIX... を選択
+
+macro-replacer-0.0.1.vsix を選択してインストール
 
