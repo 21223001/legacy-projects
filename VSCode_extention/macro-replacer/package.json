@@ -9,13 +9,17 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": ["onCommand:macroReplace.replaceText"],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "macro-replacer.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "macroReplace.replaceText",
+        "title": "macroReplaceTool"
       }
     ]
   },
