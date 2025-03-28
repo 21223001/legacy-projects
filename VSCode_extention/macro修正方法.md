@@ -11,3 +11,17 @@ C:\Users\mosuk\Documents\legacy-projects\VSCode_extention\macro-replacer>
 npm run compile
 ```
 
+
+拡張機能のVSIX(配布可能)で出力
+
+npm install -g @vscode/vsce
+
+vsce --version
+
+vsce package
+
+
+
+
+
+

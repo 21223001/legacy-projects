@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
     edit.replace(doc.uri, fullRange, newText);
     await vscode.workspace.applyEdit(edit);
 
-    vscode.window.showInformationMessage('置換（ベタ書き）を完了しました');
+    vscode.window.showInformationMessage('置換(、。（）)完了しました');
   });
 
   context.subscriptions.push(disposable);
@@ -40,5 +40,5 @@ export function activate(context: vscode.ExtensionContext) {
   const viewProvider = new MacroViewProvider();
   vscode.window.registerTreeDataProvider('macroListView', viewProvider);
 
-  
+
 }

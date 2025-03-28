@@ -5,8 +5,7 @@ export class MacroViewProvider implements vscode.TreeDataProvider<MacroItem> {
   readonly onDidChangeTreeData: vscode.Event<void> = this._onDidChangeTreeData.event;
 
   private macros = [
-    { label: '句読点変換', command: 'macroReplace.replaceText' },
-    { label: '記号変換', command: 'macroReplace.replaceText' }
+    { label: 'For_Qiita_replace', command: 'macroReplace.replaceText' },
   ];
 
   getTreeItem(element: MacroItem): vscode.TreeItem {
