@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import { MacroViewProvider } from './MacroViewProvider';
+
 
 export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand('macroReplace.replaceText', async () => {
@@ -33,4 +35,10 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(disposable);
+
+
+  const viewProvider = new MacroViewProvider();
+  vscode.window.registerTreeDataProvider('macroListView', viewProvider);
+
+  
 }

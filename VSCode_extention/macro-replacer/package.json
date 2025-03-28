@@ -11,18 +11,39 @@
   ],
   "activationEvents": ["onCommand:macroReplace.replaceText"],
   "main": "./out/extension.js",
+
+
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "macroSidebar",
+          "title": "マクロ",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "macroSidebar": [
+        {
+          "id": "macroListView",
+          "name": "置換マクロ"
+        }
+      ]
+    },
     "commands": [
       {
-        "command": "macro-replacer.helloWorld",
-        "title": "Hello World"
+        "command": "macroReplace.replaceText",
+        "title": "マクロ：文字置換"
       },
       {
-        "command": "macroReplace.replaceText",
-        "title": "macroReplaceTool"
+        "command": "macroReplace.replaceWithPreset",
+        "title": "プリセット置換を実行"
       }
     ]
   },
+
+  
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
