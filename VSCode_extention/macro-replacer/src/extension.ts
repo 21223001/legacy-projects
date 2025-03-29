@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { MacroViewProvider } from './MacroViewProvider';
 
 
-function replace_macro(commandId: string, replaceList: { from: string, to: string }[], label: string) {
+function for_qiita_extension(commandId: string, replaceList: { from: string, to: string }[], label: string) {
   return vscode.commands.registerCommand(commandId, async () => {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
@@ -31,20 +31,45 @@ export function activate(context: vscode.ExtensionContext) {
   // マクロ1: for basic
   const replace1 = [
     { from: '、', to: '，' },
-    { from: '。', to: '．' }
-  ];
-
-  // マクロ2: for advantage
-  const replace2 = [
+    { from: '。', to: '．' },
     { from: '（', to: '(' },
     { from: '）', to: ')' }
   ];
 
-  context.subscriptions.push(replace_macro('macroReplace.replace1', replace1, '句読点'));
-  context.subscriptions.push(replace_macro('macroReplace.replace2', replace2, '括弧'));
+  // マクロ2: for advantage
+  const replace2 = [
+    { from: '　', to: ' ' }
+  ];
+
+  context.subscriptions.push(for_qiita_extension('macroReplace.replace1', replace1, 'replace1'));
+  context.subscriptions.push(for_qiita_extension('macroReplace.replace2', replace2, 'replace2'));
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('macroReplace.checkKeywords', async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        vscode.window.showErrorMessage('エディタが開かれていません');
+        return;
+      }
+  
+      const doc = editor.document;
+      const text = doc.getText();
+
+      const keywords = ['In a nutshell', '予想される読み手', 'Summary', 'References'];  
+      
+      const notFound = keywords.filter(word => !text.includes(word));
+  
+      if (notFound.length === 0) {
+        vscode.window.showInformationMessage('All detected');
+      } else {
+        vscode.window.showErrorMessage(`Cannnot found: ${notFound.join(', ')}`);
+      }
+    })
+  );
+  
 
   const viewProvider = new MacroViewProvider();
   vscode.window.registerTreeDataProvider('macroListView', viewProvider);
 }
-console.log("=== マクロ拡張：起動しました ===");
+console.log("=== Run:Extensions ===");
 

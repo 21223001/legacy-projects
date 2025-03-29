@@ -39,6 +39,10 @@
       {
         "command": "macroReplace.replace2",
         "title": "For_Qiita_advntage"
+      },
+      {
+        "command": "macroReplace.checkKeywords",
+        "title": "Try_to_detect_keywords"
       }
     ]
   },
