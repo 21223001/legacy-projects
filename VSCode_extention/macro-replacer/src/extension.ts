@@ -28,7 +28,7 @@ function for_qiita_extension(commandId: string, replaceList: { from: string, to:
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  // マクロ1: for basic
+  // Ex1: for basic
   const replace1 = [
     { from: '、', to: '，' },
     { from: '。', to: '．' },
@@ -36,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
     { from: '）', to: ')' }
   ];
 
-  // マクロ2: for advantage
+  // Ex2:for advantage
   const replace2 = [
     { from: '　', to: ' ' }
   ];
@@ -44,6 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(for_qiita_extension('macroReplace.replace1', replace1, 'replace1'));
   context.subscriptions.push(for_qiita_extension('macroReplace.replace2', replace2, 'replace2'));
 
+  // Ex3:keyword detection
   context.subscriptions.push(
     vscode.commands.registerCommand('macroReplace.checkKeywords', async () => {
       const editor = vscode.window.activeTextEditor;
@@ -51,14 +52,12 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showErrorMessage('エディタが開かれていません');
         return;
       }
-  
       const doc = editor.document;
       const text = doc.getText();
 
       const keywords = ['In a nutshell', '予想される読み手', 'Summary', 'References'];  
       
       const notFound = keywords.filter(word => !text.includes(word));
-  
       if (notFound.length === 0) {
         vscode.window.showInformationMessage('All detected');
       } else {
@@ -67,6 +66,26 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
   
+
+  //Ex4:open files(.cpp .h)
+  context.subscriptions.push(
+    vscode.commands.registerCommand('macroReplace.openCppAndHeaderFiles', async () => {
+      const files = await vscode.workspace.findFiles('**/*.{cpp,h}', '**/node_modules/**');
+
+      if (files.length === 0) {
+        vscode.window.showInformationMessage('No .cpp or .h files found.');
+        return;
+      }
+
+      for (const file of files) {
+        const doc = await vscode.workspace.openTextDocument(file);
+        await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true });
+      }
+
+      vscode.window.showInformationMessage(`${files.length} files opened.`);
+    })
+  );
+
 
   const viewProvider = new MacroViewProvider();
   vscode.window.registerTreeDataProvider('macroListView', viewProvider);

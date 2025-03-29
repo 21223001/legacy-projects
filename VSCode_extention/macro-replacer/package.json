@@ -9,7 +9,13 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": ["onCommand:macroReplace.replaceText"],
+  "activationEvents": [
+  "onCommand:macroReplace.replace1",
+  "onCommand:macroReplace.replace2",
+  "onCommand:macroReplace.checkKeywords",
+  "onCommand:macroReplace.openCppAndHeaderFiles"
+  ],
+
   "main": "./out/extension.js",
 
 
@@ -18,7 +24,7 @@
       "activitybar": [
         {
           "id": "macroSidebar",
-          "title": "マクロ",
+          "title": "Macro",
           "icon": "media/icon.svg"
         }
       ]
@@ -27,7 +33,7 @@
       "macroSidebar": [
         {
           "id": "macroListView",
-          "name": "置換マクロ"
+          "name": "Macro"
         }
       ]
     },
@@ -43,7 +49,12 @@
       {
         "command": "macroReplace.checkKeywords",
         "title": "Try_to_detect_keywords"
+      },
+      {
+        "command": "macroReplace.openCppAndHeaderFiles",
+        "title": "Open All .cpp and .h Files"
       }
+
     ]
   },
 
