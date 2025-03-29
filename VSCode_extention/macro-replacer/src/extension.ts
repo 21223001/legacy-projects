@@ -67,7 +67,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
   
 
-  //Ex4:open files(.cpp .h)
+  // Ex4: open files (.cpp .h) in sorted order
   context.subscriptions.push(
     vscode.commands.registerCommand('macroReplace.openCppAndHeaderFiles', async () => {
       const files = await vscode.workspace.findFiles('**/*.{cpp,h}', '**/node_modules/**');
@@ -77,18 +77,28 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      for (const file of files) {
+      const sortedFiles = files.sort((a, b) => {
+        const nameA = a.path.split('/').pop()!;
+        const nameB = b.path.split('/').pop()!;
+        const baseA = nameA.replace(/\.(cpp|h)$/, '');
+        const baseB = nameB.replace(/\.(cpp|h)$/, '');
+        if (baseA === baseB) {
+          return nameA.endsWith('.cpp') ? -1 : 1; 
+        }
+        return nameA.localeCompare(nameB);
+      });
+
+      for (const file of sortedFiles) {
         const doc = await vscode.workspace.openTextDocument(file);
         await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true });
       }
-
-      vscode.window.showInformationMessage(`${files.length} files opened.`);
+      vscode.window.showInformationMessage(`${sortedFiles.length} files opened in sorted order.`);
     })
   );
-
 
   const viewProvider = new MacroViewProvider();
   vscode.window.registerTreeDataProvider('macroListView', viewProvider);
 }
+
 console.log("=== Run:Extensions ===");
 
