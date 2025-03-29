@@ -33,12 +33,12 @@
     },
     "commands": [
       {
-        "command": "macroReplace.replaceText",
-        "title": "マクロ：文字置換"
+        "command": "macroReplace.replace1",
+        "title": "For_Qiita_basic"
       },
       {
-        "command": "macroReplace.replaceWithPreset",
-        "title": "プリセット置換を実行"
+        "command": "macroReplace.replace2",
+        "title": "For_Qiita_advntage"
       }
     ]
   },

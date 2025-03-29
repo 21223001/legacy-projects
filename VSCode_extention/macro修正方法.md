@@ -1,4 +1,10 @@
 
+## セットアップ
+npm install -g yo generator-code
+
+yo code
+
+
 ## 修正方法
 
 以下の内容を修正
@@ -10,6 +16,10 @@ C:\Users\mosuk\Documents\legacy-projects\VSCode_extention\macro-replacer>
 ```powershell
 npm run compile
 ```
+
+
+ MacroViewProvider.ts の修正（サイドバーの中身）
+
 
 
 拡張機能のVSIX(配布可能)で出力
