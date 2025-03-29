@@ -40,3 +40,10 @@ VSCodeから直接インストール
 
 macro-replacer-0.0.1.vsix を選択してインストール
 
+
+
+## log
+
+2のreplaceと1つのdetect機能
+
+
