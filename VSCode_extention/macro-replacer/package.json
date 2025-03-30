@@ -10,10 +10,11 @@
     "Other"
   ],
   "activationEvents": [
-  "onCommand:macroReplace.replace1",
-  "onCommand:macroReplace.replace2",
-  "onCommand:macroReplace.checkKeywords",
-  "onCommand:macroReplace.openCppAndHeaderFiles"
+    "onView:macroListView",
+    "onCommand:macroReplace.replace1",
+    "onCommand:macroReplace.replace2",
+    "onCommand:macroReplace.checkKeywords",
+    "onCommand:macroReplace.openCppAndHeaderFiles"
   ],
 
   "main": "./out/extension.js",

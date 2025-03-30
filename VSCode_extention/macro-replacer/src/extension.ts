@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { MacroViewProvider } from './MacroViewProvider';
 
 
 function for_qiita_extension(commandId: string, replaceList: { from: string, to: string }[], label: string) {
@@ -27,15 +26,80 @@ function for_qiita_extension(commandId: string, replaceList: { from: string, to:
   });
 }
 
+
+
+class MacroItem extends vscode.TreeItem {
+  constructor(
+    public readonly label: string,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+    public readonly command?: vscode.Command
+  ) {
+    super(label, collapsibleState);
+  }
+}
+
+class MacroProvider implements vscode.TreeDataProvider<MacroItem> {
+  private _onDidChangeTreeData: vscode.EventEmitter<MacroItem | undefined> = new vscode.EventEmitter<MacroItem | undefined>();
+  readonly onDidChangeTreeData: vscode.Event<MacroItem | undefined> = this._onDidChangeTreeData.event;
+
+  getTreeItem(element: MacroItem): vscode.TreeItem {
+    return element;
+  }
+
+  getChildren(element?: MacroItem): Thenable<MacroItem[]> {
+    if (!element) {
+      return Promise.resolve([
+        new MacroItem('For_Qiita', vscode.TreeItemCollapsibleState.Expanded),
+        new MacroItem('For_Turgor', vscode.TreeItemCollapsibleState.Expanded)
+      ]);
+    }
+
+    if (element.label === 'For_Qiita') {
+      return Promise.resolve([
+        new MacroItem('replace1', vscode.TreeItemCollapsibleState.None, {
+          command: 'macroReplace.replace1',
+          title: 'Run replace1'
+        }),
+        new MacroItem('replace2', vscode.TreeItemCollapsibleState.None, {
+          command: 'macroReplace.replace2',
+          title: 'Run replace2'
+        }),
+        new MacroItem('keyword detection', vscode.TreeItemCollapsibleState.None, {
+          command: 'macroReplace.checkKeywords',
+          title: 'Run keyword detection'
+        })
+
+      ]);
+    }
+
+    if (element.label === 'For_Turgor') {
+      return Promise.resolve([
+        new MacroItem('open files (.cpp .h) in sorted order', vscode.TreeItemCollapsibleState.None, {
+          command: 'macroReplace.openCppAndHeaderFiles',
+          title: 'Run open files (.cpp .h) in sorted order'
+        })
+      ]);
+    }
+
+    return Promise.resolve([]);
+  }
+}
+
+
+
 export function activate(context: vscode.ExtensionContext) {
   // Ex1: for basic
   const replace1 = [
     { from: '、', to: '，' },
     { from: '。', to: '．' },
     { from: '（', to: '(' },
-    { from: '）', to: ')' }
+    { from: '）', to: ')' },
+    { from: '→', to: '->' },
+    { from: '←', to: '<-' },
+    { from: '：', to: ':' }
   ];
 
+  
   // Ex2:for advantage
   const replace2 = [
     { from: '　', to: ' ' }
@@ -96,8 +160,12 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  const viewProvider = new MacroViewProvider();
-  vscode.window.registerTreeDataProvider('macroListView', viewProvider);
+    const macroProvider = new MacroProvider();
+    vscode.window.createTreeView('macroListView', {
+      treeDataProvider: macroProvider
+    });
+  
+
 }
 
 console.log("=== Run:Extensions ===");
