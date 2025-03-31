@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 
 
 function for_qiita_extension(commandId: string, replaceList: { from: string, to: string }[], label: string) {
@@ -134,31 +135,102 @@ export function activate(context: vscode.ExtensionContext) {
   // Ex4: open files (.cpp .h) in sorted order
   context.subscriptions.push(
     vscode.commands.registerCommand('macroReplace.openCppAndHeaderFiles', async () => {
-      const files = await vscode.workspace.findFiles('**/*.{cpp,h}', '**/node_modules/**');
 
-      if (files.length === 0) {
-        vscode.window.showInformationMessage('No .cpp or .h files found.');
-        return;
+
+    // [1] .vscode/macro_config.json読み込み
+    // したがって， .vscode内に記述したjsonごとに変更できる
+    let specificFiles: string[] = [];
+    let ignoreFiles: string[] = [];
+    let configFound = false;
+
+    if (!vscode.workspace.workspaceFolders) {
+      vscode.window.showErrorMessage('Not open Workspace');
+      return;
+    }
+
+    for (const folder of vscode.workspace.workspaceFolders) {
+      try {
+        const configUri = vscode.Uri.joinPath(folder.uri, '.vscode', 'macro_config.json');
+        const configDoc = await vscode.workspace.openTextDocument(configUri);
+        const config = JSON.parse(configDoc.getText());
+    
+        specificFiles = config.specificFiles ?? [];
+        ignoreFiles = config.ignoreFiles ?? [];
+        configFound = true;
+        break;
+      } catch (err) {
+        continue;
       }
+    }
+    
+    if (!configFound) {
+      vscode.window.showErrorMessage('Cannot find macro_config.json');
+      return;
+    }
 
-      const sortedFiles = files.sort((a, b) => {
-        const nameA = a.path.split('/').pop()!;
-        const nameB = b.path.split('/').pop()!;
-        const baseA = nameA.replace(/\.(cpp|h)$/, '');
-        const baseB = nameB.replace(/\.(cpp|h)$/, '');
-        if (baseA === baseB) {
-          return nameA.endsWith('.cpp') ? -1 : 1; 
-        }
-        return nameA.localeCompare(nameB);
-      });
+    // [2] 特定のファイルを開く
+    const openedUris = new Set<string>();
+    const notFoundFiles: string[] = [];
 
-      for (const file of sortedFiles) {
-        const doc = await vscode.workspace.openTextDocument(file);
+    for (const fileName of specificFiles) {
+      const foundFiles = await vscode.workspace.findFiles(`**/${fileName}`, '**/node_modules/**');
+      if (foundFiles.length > 0) {
+        const doc = await vscode.workspace.openTextDocument(foundFiles[0]);
         await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true });
+        openedUris.add(foundFiles[0].toString());
+      } else {
+        notFoundFiles.push(fileName);
       }
-      vscode.window.showInformationMessage(`${sortedFiles.length} files opened in sorted order.`);
-    })
-  );
+    }
+
+    if (notFoundFiles.length > 0) {
+      vscode.window.showErrorMessage(`Cannot found: ${notFoundFiles.join(', ')}`);
+    }
+
+
+
+    // [3] .cpp/.h をソートして開く（すでに開いたものと除外ファイルはスキップ）
+    const files = await vscode.workspace.findFiles('**/*.{cpp,h}', '**/node_modules/**');
+
+    if (files.length === 0) {
+      vscode.window.showInformationMessage('No .cpp or .h files found.');
+      return;
+    }
+
+    // 除外ファイル名一覧を取得（ファイル名だけで比較）
+    const sortedFiles = files.sort((a, b) => {
+      const nameA = a.path.split('/').pop()!;
+      const nameB = b.path.split('/').pop()!;
+      const baseA = nameA.replace(/\.(cpp|h)$/, '');
+      const baseB = nameB.replace(/\.(cpp|h)$/, '');
+      if (baseA === baseB) {
+        return nameA.endsWith('.cpp') ? -1 : 1;
+      }
+      return nameA.localeCompare(nameB);
+    });
+
+
+    let openedCount = 0;
+    for (const file of sortedFiles) {
+      const fileName = path.basename(file.fsPath);
+
+      if (ignoreFiles.includes(fileName)) {
+        continue; 
+      }
+
+      if (openedUris.has(file.toString())) {
+        continue;
+      }
+
+      const doc = await vscode.workspace.openTextDocument(file);
+      await vscode.window.showTextDocument(doc, { preview: false, preserveFocus: true });
+      openedCount++;
+
+    }
+  })
+);
+
+
 
     const macroProvider = new MacroProvider();
     vscode.window.createTreeView('macroListView', {
