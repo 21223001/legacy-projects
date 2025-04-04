@@ -1,0 +1,48 @@
+{
+  "name": "vscode-paste-image",
+  "displayName": "Paste Image",
+  "description": "Paste image from clipboard directly",
+  "version": "1.0.4",
+  "publisher": "mushan",
+  "author": {
+    "name": "mushan",
+    "email": "mushanmail@126.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mushanshitiancai/vscode-paste-image.git"
+  },
+  "homepage": "https://github.com/mushanshitiancai/vscode-paste-image/blob/master/README.md",
+  "bugs": {
+    "url": "https://github.com/mushanshitiancai/vscode-paste-image/issues"
+  },
+  "icon": "res/icon.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.pasteImage"
+  ],
+  "main": "./out/src/extension.js",
+  "contributes": {},
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./"
+  },
+  "dependencies": {
+    "copy-paste": "^1.2.0",
+    "fs-extra": "^3.0.1",
+    "moment": "^2.14.1",
+    "upath": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.14.0",
+    "@types/vscode": "^1.80.0",
+    "@vscode/test-electron": "^2.4.1",
+    "typescript": "^5.8.2"
+  }
+}
