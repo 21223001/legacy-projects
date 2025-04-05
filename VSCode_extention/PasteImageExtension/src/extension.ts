@@ -2,6 +2,8 @@
 import * as vscode from 'vscode';
 import { Logger } from './logger';
 import { Paster } from './utils/paster';
+import { SidebarProvider } from './panels/SidebarProvider';
+
 
 // 拡張機能の初期化
 export function activate(context: vscode.ExtensionContext): void {
@@ -18,6 +20,11 @@ export function activate(context: vscode.ExtensionContext): void {
             Logger.showErrorMessage(errMsg);
         }
     });
+
+    const sidebarProvider = new SidebarProvider(context.extensionUri);
+    context.subscriptions.push(
+      vscode.window.registerWebviewViewProvider(SidebarProvider.viewType, sidebarProvider)
+    );
 
     context.subscriptions.push(disposable);
 }

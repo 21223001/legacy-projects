@@ -27,7 +27,26 @@
     "onCommand:extension.pasteImage"
   ],
   "main": "./out/src/extension.js",
-  "contributes": {},
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "pasteImage",
+          "title": "Paste Image",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "pasteImage": [
+        {
+          "type": "webview",
+          "id": "pasteImage.sidebar",
+          "name": "Paste Image Sidebar"
+        }
+      ]
+    }
+  },
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -w -p ./"
@@ -36,11 +55,15 @@
     "copy-paste": "^1.2.0",
     "fs-extra": "^3.0.1",
     "moment": "^2.14.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "upath": "^1.0.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.14.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
     "@types/vscode": "^1.80.0",
     "@vscode/test-electron": "^2.4.1",
     "typescript": "^5.8.2"
